@@ -1,76 +1,83 @@
 package com.quantitymeasurement.quantitymeasurementapp;
 
 public class QuantityMeasurementApp {
-	public static class Feet{
-		private final double value;
-		
-		public Feet(double value) {
-			this.value=value;
+
+	public enum LengthUnit {
+		FEET(12.0),
+		INCHES(1.0);
+
+		private final double conversionFactor;
+
+		private LengthUnit(double conversionFactor) {
+			this.conversionFactor = conversionFactor;
 		}
+
+		public double getConversionFactor() {
+			return conversionFactor;
+		}
+	}
+
+	public static class Length {
+		private double value;
+		private LengthUnit unit;
+
+		public Length(double value, LengthUnit unit) {
+			if (unit == null) {
+				throw new IllegalArgumentException("Unit cannot be null");
+			}
+			this.value = value;
+			this.unit = unit;
+		}
+
+		public double getValue() {
+			return value;
+		}
+
+		public double convertToBaseUnit() {
+			return value * this.unit.getConversionFactor();
+		}
+		public boolean compare(Length thatLength) {
+			return Double.compare(
+				this.convertToBaseUnit(),
+				thatLength.convertToBaseUnit()
+			) == 0;
+		}
+
 		@Override
 		public boolean equals(Object obj) {
-			if(this==obj) {
+			if (this == obj) {
 				return true;
 			}
-			if(obj==null) {
+			if (obj == null) {
 				return false;
 			}
-			if(this.getClass()!=obj.getClass()) {
+			if (this.getClass() != obj.getClass()) {
 				return false;
 			}
-			
-			Feet other=(Feet)obj;
-			
-			//compare 
-			return Double.compare(this.value, other.value)==0;
+
+			Length other = (Length) obj;
+
+			// compare
+			return compare(other);
 		}
-		
+
+		@Override
+		public int hashCode() {
+			return Double.hashCode(convertToBaseUnit());
+		}
+
 	}
-	public static class Inches {
-
-	    private final double value;
-
-	    public Inches(double value) {
-	        this.value = value;
-	    }
-
-	    @Override
-	    public boolean equals(Object obj) {
-
-	        if (this == obj) return true;
-
-	        if (obj == null) return false;
-
-	        if (this.getClass() != obj.getClass()) return false;
-
-	        Inches other = (Inches) obj;
-
-	        return Double.compare(this.value, other.value) == 0;
-	    }
-
-	    @Override
-	    public int hashCode() {
-	        return Double.hashCode(value);
-	    }
-	}
-	public static void demonstrateFeetEquality() {
-	    Feet f1 = new Feet(1.0);
-	    Feet f2 = new Feet(1.0);
-
-	    System.out.println("Feet Equal? " + f1.equals(f2));
-	}
-
-	public static void demonstrateInchesEquality() {
-	    Inches i1 = new Inches(12.0);
-	    Inches i2 = new Inches(12.0);
-
-	    System.out.println("Inches Equal? " + i1.equals(i2));
-	}
-
 
 	public static void main(String[] args) {
-		 demonstrateFeetEquality();
-	     demonstrateInchesEquality();
+		try{
+			Length l1=new Length(1, LengthUnit.FEET);
+			Length l2=new Length(12, LengthUnit.INCHES);
+			System.out.println(l1.equals(l2));
+		}catch(IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+		
 	}
 
 }
