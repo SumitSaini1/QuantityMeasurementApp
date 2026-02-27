@@ -337,4 +337,136 @@ public class QuantityMeasurementAppTest {
         assertTrue(l1.equals(l2));
     }
 
+    @Test
+    void testAdditionExplicitTargetUnitFeet(){
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+		Length l2 = new Length(12.0, LengthUnit.INCHES);
+        Length res=Length.add(l1,l2,LengthUnit.FEET);
+        assertEquals(2.0, res.getValue());
+
+    }
+
+    @Test
+    void testAdditionExplicitTargetUnitInches() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+		Length l2 = new Length(12.0, LengthUnit.INCHES);
+        Length res=Length.add(l1,l2,LengthUnit.INCHES);
+        assertEquals(24.0, res.getValue());
+
+    }
+    @Test
+    void testAdditionExplicitTargetUnitYards()  {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+		Length l2 = new Length(12.0, LengthUnit.INCHES);
+        Length res=Length.add(l1,l2,LengthUnit.YARDS);
+        assertEquals(0.666, res.getValue(),0.001);
+
+    }
+
+    @Test
+    void testAdditionExplicitTargetUnitCentimeters()  {
+        Length l1 = new Length(1.0, LengthUnit.INCHES);
+		Length l2 = new Length(1.0, LengthUnit.INCHES);
+        Length res=Length.add(l1,l2,LengthUnit.CENTIMETERS);
+        assertEquals(5.08, res.getValue(),0.01);
+
+    }
+    @Test
+    void testAddition_ExplicitTargetUnit_SameAsFirstOperand() {
+        Length l1 = new Length(2.0, LengthUnit.YARDS);
+        Length l2 = new Length(3.0, LengthUnit.FEET);
+
+        Length res = Length.add(l1, l2, LengthUnit.YARDS);
+
+        assertEquals(3.0, res.getValue(), 0.0001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_SameAsSecondOperand() {
+        Length l1 = new Length(2.0, LengthUnit.YARDS);
+        Length l2 = new Length(3.0, LengthUnit.FEET);
+
+        Length res = Length.add(l1, l2, LengthUnit.FEET);
+
+        assertEquals(9.0, res.getValue(), 0.0001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_Commutativity() {
+        Length a = new Length(1.0, LengthUnit.FEET);
+        Length b = new Length(12.0, LengthUnit.INCHES);
+
+        Length r1 = Length.add(a, b, LengthUnit.YARDS);
+        Length r2 = Length.add(b, a, LengthUnit.YARDS);
+
+        assertEquals(r1.getValue(), r2.getValue(), 0.0001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_WithZero() {
+        Length l1 = new Length(5.0, LengthUnit.FEET);
+        Length l2 = new Length(0.0, LengthUnit.INCHES);
+
+        Length res = Length.add(l1, l2, LengthUnit.YARDS);
+
+        assertEquals(1.6667, res.getValue(), 0.001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_NegativeValues() {
+        Length l1 = new Length(5.0, LengthUnit.FEET);
+        Length l2 = new Length(-2.0, LengthUnit.FEET);
+
+        Length res = Length.add(l1, l2, LengthUnit.INCHES);
+
+        assertEquals(36.0, res.getValue(), 0.0001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_NullTargetUnit() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
+
+        assertThrows(NullPointerException.class,
+                () -> Length.add(l1, l2, null));
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_LargeToSmallScale() {
+        Length l1 = new Length(1000.0, LengthUnit.FEET);
+        Length l2 = new Length(500.0, LengthUnit.FEET);
+
+        Length res = Length.add(l1, l2, LengthUnit.INCHES);
+
+        assertEquals(18000.0, res.getValue(), 0.0001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_SmallToLargeScale() {
+        Length l1 = new Length(12.0, LengthUnit.INCHES);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
+
+        Length res = Length.add(l1, l2, LengthUnit.YARDS);
+
+        assertEquals(0.6667, res.getValue(), 0.001);
+    }
+
+    @Test
+    void testAddition_ExplicitTargetUnit_AllUnitCombinations() {
+        Length[] values = {
+                new Length(1, LengthUnit.FEET),
+                new Length(12, LengthUnit.INCHES),
+                new Length(1, LengthUnit.YARDS)
+        };
+
+        for (Length a : values) {
+            for (Length b : values) {
+                Length r = Length.add(a, b, LengthUnit.INCHES);
+                assertTrue(Double.isFinite(r.getValue()));
+            }
+        }
+    }
+
+
+
 }
