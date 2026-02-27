@@ -55,3 +55,55 @@ Branch: `feature/UC5-UnitConversion`
 
 - Added static `convert()` method.
 - Convert value from one unit to another.
+
+---
+
+### 🔹 UC6 – Addition of Two Length Units  
+Branch: `feature/UC6-UnitAddition`
+
+- Implemented addition of two `Length` objects.
+- Used base unit (inches) internally for calculation.
+- Converted both lengths to base unit.
+- Added the converted values.
+- Converted the result back to the unit of the first operand.
+- Returned a new `Length` object (immutability maintained).
+- Added JUnit test cases for:
+  - Same unit addition
+  - Cross unit addition
+  - Reverse order
+  - Zero case
+  - Negative case
+  - Null validation
+
+Example:
+- 1 Foot + 12 Inches = 2 Feet
+- 12 Inches + 1 Foot = 24 Inches
+
+---
+
+### 🔹 UC7 – Addition with Explicit Target Unit  
+Branch: `feature/UC7-TargetUnitAddition`
+
+- Extended addition to allow explicit target unit.
+- Implemented static method:
+  `add(length1, length2, targetUnit)`
+- Converted both lengths to base unit.
+- Added the values.
+- Converted the result into the specified target unit.
+- Returned new `Length` object in target unit.
+- Added validation for null inputs.
+- Added JUnit test cases for:
+  - Target same as first operand
+  - Target same as second operand
+  - Target different from both operands
+  - Commutativity
+  - Zero case
+  - Negative values
+  - Large values
+
+Example:
+- add(1 Foot, 12 Inches, FEET) = 2 Feet
+- add(1 Foot, 12 Inches, INCHES) = 24 Inches
+- add(1 Foot, 12 Inches, YARDS) ≈ 0.667 Yards
+
+---
