@@ -2,26 +2,10 @@ package com.quantitymeasurement.quantitymeasurementapp;
 
 public class QuantityMeasurementApp {
 
-	public enum LengthUnit {
-		FEET(12.0),
-		INCHES(1.0),
-		YARDS(36.0),
-		CENTIMETERS(0.393701);
-
-		private final double conversionFactor;
-
-		private LengthUnit(double conversionFactor) {
-			this.conversionFactor = conversionFactor;
-		}
-
-		public double getConversionFactor() {
-			return conversionFactor;
-		}
-	}
-
 	public static class Length {
 		private final double value;
 		private final LengthUnit unit;
+		private static final double EPSILON = 0.0001;
 
 		public Length(double value, LengthUnit unit) {
 			if (unit == null) {
@@ -35,14 +19,10 @@ public class QuantityMeasurementApp {
 			return value;
 		}
 
-		private double convertToBaseUnit() {
-			return value * this.unit.getConversionFactor();
-		}
-
 		public boolean compare(Length thatLength) {
-			return Double.compare(
-					this.convertToBaseUnit(),
-					thatLength.convertToBaseUnit()) == 0;
+			return Math.abs(
+					this.unit.convertToBaseUnit(this.value) -
+							thatLength.unit.convertToBaseUnit(thatLength.value)) < EPSILON;
 		}
 
 		public Length add(Length other) {
@@ -50,11 +30,11 @@ public class QuantityMeasurementApp {
 				throw new IllegalArgumentException("Length can not be null");
 			}
 
-			double baseThis = this.convertToBaseUnit();
-			double baseOther = other.convertToBaseUnit();
+			double baseThis = this.unit.convertToBaseUnit(this.value);
+			double baseOther = other.unit.convertToBaseUnit(other.value);
 
 			double sumBase = baseThis + baseOther;
-			double resultValue = sumBase / this.unit.getConversionFactor();
+			double resultValue = this.unit.convertFromBaseUnit(sumBase);
 			return new Length(resultValue, this.unit);
 
 		}
@@ -69,10 +49,10 @@ public class QuantityMeasurementApp {
 			if (!Double.isFinite(length1.value) || !Double.isFinite(length2.value)) {
 				throw new IllegalArgumentException("Values must be finite numbers");
 			}
-			double baseLength1 = length1.convertToBaseUnit();
-			double baseLength2 = length2.convertToBaseUnit();
+			double baseLength1 = length1.unit.convertToBaseUnit(length1.value);
+			double baseLength2 = length2.unit.convertToBaseUnit(length2.value);
 			double sumBase = baseLength1 + baseLength2;
-			double resultValue = sumBase / targetUnit.getConversionFactor();
+			double resultValue = targetUnit.convertFromBaseUnit(sumBase);
 			return new Length(resultValue, targetUnit);
 
 		}
@@ -97,7 +77,8 @@ public class QuantityMeasurementApp {
 
 		@Override
 		public int hashCode() {
-			return Double.hashCode(convertToBaseUnit());
+			double baseValue = unit.convertToBaseUnit(value);
+			return Double.hashCode(baseValue);
 		}
 
 	}
@@ -114,9 +95,8 @@ public class QuantityMeasurementApp {
 			throw new IllegalArgumentException("Invalid numeric value");
 		}
 
-		double valueInBase = value * source.getConversionFactor();
-
-		return valueInBase / target.getConversionFactor();
+		double baseValue = source.convertToBaseUnit(value);
+		return target.convertFromBaseUnit(baseValue);
 	}
 
 	public static Length add(Length l1, Length l2) {
@@ -127,53 +107,103 @@ public class QuantityMeasurementApp {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("=== Quantity Measurement Demo ===");
 
-		try {
-
-			
-			// Addition Example
-			Length l1 = new Length(1, LengthUnit.FEET);
-			Length l2 = new Length(12, LengthUnit.INCHES);
-
-			Length result = l1.add(l2);
-			System.out.println("1 Feet + 12 Inches = " + result.getValue() + " " + l1.unit);
-
-			Length resultInYards = Length.add(l1, l2, LengthUnit.YARDS);
-			System.out.println("1 Feet + 12 Inches = " + resultInYards.getValue() + " YARDS");
-
-			// Equality Checks
-			Length yard = new Length(1, LengthUnit.YARDS);
-			Length feet = new Length(3, LengthUnit.FEET);
-			System.out.println("1 Yard == 3 Feet : " + yard.equals(feet));
-
-			Length inches = new Length(36, LengthUnit.INCHES);
-			System.out.println("1 Yard == 36 Inches : " + yard.equals(inches));
-
-			Length cm = new Length(1, LengthUnit.CENTIMETERS);
-			Length inchEquivalent = new Length(0.393701, LengthUnit.INCHES);
-			System.out.println("1 CM == 0.393701 Inches : " + cm.equals(inchEquivalent));
-
-			// Same Unit Comparison
-			Length y1 = new Length(2, LengthUnit.YARDS);
-			Length y2 = new Length(2, LengthUnit.YARDS);
-			System.out.println("2 Yards == 2 Yards : " + y1.equals(y2));
-
-			// Unit Conversions
-			System.out.println("3 Feet -> Inches : " +
-					convert(3, LengthUnit.FEET, LengthUnit.INCHES));
-
-			System.out.println("36 Inches -> Yards : " +
-					convert(36, LengthUnit.INCHES, LengthUnit.YARDS));
-
-			System.out.println("100 CM -> Feet : " +
-					convert(100, LengthUnit.CENTIMETERS, LengthUnit.FEET));
-
-		} catch (IllegalArgumentException e) {
-			System.err.println("Error: " + e.getMessage());
+		java.util.Scanner scanner = new java.util.Scanner(System.in);
+	
+		System.out.println("==================================");
+		System.out.println("   QUANTITY MEASUREMENT SYSTEM   ");
+		System.out.println("==================================");
+	
+		while (true) {
+	
+			System.out.println("\nAvailable Units: FEET | INCHES | YARDS | CENTIMETERS");
+			System.out.println("\nChoose an Option:");
+			System.out.println("1 → Add Two Lengths");
+			System.out.println("2 → Convert Length");
+			System.out.println("3 → Compare Two Lengths");
+			System.out.println("4 → Exit");
+			System.out.print("Enter your choice (1-4): ");
+	
+			int choice = scanner.nextInt();
+	
+			try {
+				switch (choice) {
+	
+					case 1:
+						System.out.println("\n--- ADD TWO LENGTHS ---");
+						System.out.println("Example Input: 1 FEET");
+	
+						System.out.print("Enter first value: ");
+						double v1 = scanner.nextDouble();
+						System.out.print("Enter first unit: ");
+						LengthUnit u1 = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						System.out.print("Enter second value: ");
+						double v2 = scanner.nextDouble();
+						System.out.print("Enter second unit: ");
+						LengthUnit u2 = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						System.out.print("Enter target unit for result: ");
+						LengthUnit target = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						Length l1 = new Length(v1, u1);
+						Length l2 = new Length(v2, u2);
+	
+						Length result = Length.add(l1, l2, target);
+	
+						System.out.println("Result = " + result.getValue() + " " + target);
+						break;
+	
+					case 2:
+						System.out.println("\n--- CONVERT LENGTH ---");
+						System.out.println("Example Input: 10 INCHES to FEET");
+	
+						System.out.print("Enter value: ");
+						double value = scanner.nextDouble();
+	
+						System.out.print("Enter source unit: ");
+						LengthUnit source = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						System.out.print("Enter target unit: ");
+						LengthUnit targetUnit = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						double converted = convert(value, source, targetUnit);
+	
+						System.out.println("Converted Value = " + converted + " " + targetUnit);
+						break;
+	
+					case 3:
+						System.out.println("\n--- COMPARE TWO LENGTHS ---");
+						System.out.println("Example Input: 1 YARD and 3 FEET");
+	
+						System.out.print("Enter first value: ");
+						double cv1 = scanner.nextDouble();
+						System.out.print("Enter first unit: ");
+						LengthUnit cu1 = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						System.out.print("Enter second value: ");
+						double cv2 = scanner.nextDouble();
+						System.out.print("Enter second unit: ");
+						LengthUnit cu2 = LengthUnit.valueOf(scanner.next().toUpperCase());
+	
+						Length cl1 = new Length(cv1, cu1);
+						Length cl2 = new Length(cv2, cu2);
+	
+						System.out.println("Are Equal? → " + cl1.equals(cl2));
+						break;
+	
+					case 4:
+						System.out.println("Exiting Application...");
+						scanner.close();
+						return;
+	
+					default:
+						System.out.println("Invalid choice! Please enter 1-4.");
+				}
+	
+			} catch (IllegalArgumentException e) {
+				System.out.println("Error: Invalid input. Please enter valid values and units.");
+			}
 		}
-
-		System.out.println("=== End ===");
 	}
-
 }
