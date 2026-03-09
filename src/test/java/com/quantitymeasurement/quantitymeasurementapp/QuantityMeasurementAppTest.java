@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.quantitymeasurement.quantitymeasurementapp.QuantityMeasurementApp.Length;
 import com.quantitymeasurement.quantitymeasurementapp.LengthUnit;
+import com.quantitymeasurement.quantitymeasurementapp.WeightUnit;
+import com.quantitymeasurement.quantitymeasurementapp.Weight;
 
 public class QuantityMeasurementAppTest {
 
@@ -465,6 +467,135 @@ public class QuantityMeasurementAppTest {
                 assertTrue(Double.isFinite(r.getValue()));
             }
         }
+    }
+
+
+    @Test
+    void testSameWeightEquality() {
+        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1, WeightUnit.KILOGRAM);
+
+        assertTrue(w1.equals(w2));
+    }
+
+    @Test
+    void testKilogramGramEquality() {
+        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1000, WeightUnit.GRAM);
+
+        assertTrue(w1.equals(w2));
+    }
+
+    @Test
+    void testPoundKilogramEquality() {
+        Weight w1 = new Weight(2, WeightUnit.POUND);
+        Weight w2 = new Weight(0.907184, WeightUnit.KILOGRAM);
+
+        assertTrue(w1.equals(w2));
+    }
+
+    @Test
+    void testPoundGramEquality() {
+        Weight w1 = new Weight(1, WeightUnit.POUND);
+        Weight w2 = new Weight(453.592, WeightUnit.GRAM);
+
+        assertTrue(w1.equals(w2));
+    }
+
+    // ---------------------------
+    // Conversion Tests
+    // ---------------------------
+
+    @Test
+    void testKilogramToGramConversion() {
+
+        Weight w = new Weight(1, WeightUnit.KILOGRAM);
+
+        double result =
+                WeightUnit.GRAM.convertFromBaseUnit(
+                        WeightUnit.KILOGRAM.convertToBaseUnit(w.getValue())
+                );
+
+        assertEquals(1000, result, 0.001);
+    }
+
+    @Test
+    void testGramToKilogramConversion() {
+
+        Weight w = new Weight(1000, WeightUnit.GRAM);
+
+        double result =
+                WeightUnit.KILOGRAM.convertFromBaseUnit(
+                        WeightUnit.GRAM.convertToBaseUnit(w.getValue())
+                );
+
+        assertEquals(1, result, 0.001);
+    }
+
+    @Test
+    void testPoundToKilogramConversion() {
+
+        Weight w = new Weight(2, WeightUnit.POUND);
+
+        double result =
+                WeightUnit.KILOGRAM.convertFromBaseUnit(
+                        WeightUnit.POUND.convertToBaseUnit(w.getValue())
+                );
+
+        assertEquals(0.907184, result, 0.001);
+    }
+
+    // ---------------------------
+    // Addition Tests
+    // ---------------------------
+
+    @Test
+    void testAdditionKilogramGram() {
+
+        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1000, WeightUnit.GRAM);
+
+        Weight result = Weight.add(w1, w2, WeightUnit.KILOGRAM);
+
+        assertEquals(2, result.getValue(), 0.001);
+    }
+
+    @Test
+    void testAdditionGramKilogram() {
+
+        Weight w1 = new Weight(500, WeightUnit.GRAM);
+        Weight w2 = new Weight(0.5, WeightUnit.KILOGRAM);
+
+        Weight result = Weight.add(w1, w2, WeightUnit.GRAM);
+
+        assertEquals(1000, result.getValue(), 0.001);
+    }
+
+    @Test
+    void testAdditionPoundGram() {
+
+        Weight w1 = new Weight(1, WeightUnit.POUND);
+        Weight w2 = new Weight(453.592, WeightUnit.GRAM);
+
+        Weight result = Weight.add(w1, w2, WeightUnit.POUND);
+
+        assertEquals(2, result.getValue(), 0.01);
+    }
+
+    // ---------------------------
+    // Category Safety Test
+    // ---------------------------
+
+    @Test
+    void testWeightNotEqualLength() {
+
+        QuantityMeasurementApp.Length length =
+                new QuantityMeasurementApp.Length(1, LengthUnit.FEET);
+
+        Weight weight =
+                new Weight(1, WeightUnit.KILOGRAM);
+
+        assertFalse(weight.equals(length));
     }
 
 
