@@ -11,4 +11,7 @@ public interface IMeasurable {
     default double convertFromBaseUnit(double baseValue) {
         return baseValue / getConversionFactor();
     }
+    default boolean supportsArithmetic(){
+        return true;
+    }
 }

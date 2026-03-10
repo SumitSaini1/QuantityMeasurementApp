@@ -49,7 +49,9 @@ public class QuantityMeasurementApp {
 			System.out.println("12 → Subtract Volume");
 			System.out.println("13 → Divide Length");
 
-			System.out.println("14 → Exit");
+			System.out.println("14 → Convert Temperature");
+			System.out.println("15 → Compare Two Temperatures");
+			System.out.println("16 → Exit");
 			System.out.print("Enter your choice: ");
 
 			int choice = scanner.nextInt();
@@ -358,6 +360,51 @@ public class QuantityMeasurementApp {
 
 						break;
 					case 14:
+
+						System.out.println("\n--- CONVERT TEMPERATURE ---");
+
+						System.out.print("Enter value: ");
+						double tempValue = scanner.nextDouble();
+
+						System.out.print("Enter source unit (CELSIUS/FAHRENHEIT/KELVIN): ");
+						TemperatureUnit sourceTemp = TemperatureUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter target unit (CELSIUS/FAHRENHEIT/KELVIN): ");
+						TemperatureUnit targetTemp = TemperatureUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<TemperatureUnit> temperature = new Quantity<>(tempValue, sourceTemp);
+
+						Quantity<TemperatureUnit> convertedTemp = temperature.convertTo(targetTemp);
+
+						System.out.println("Converted Value = " +
+								convertedTemp.getValue() + " " + targetTemp);
+
+						break;
+					case 15:
+
+						System.out.println("\n--- COMPARE TWO TEMPERATURES ---");
+
+						System.out.print("Enter first value: ");
+						double t1 = scanner.nextDouble();
+
+						System.out.print("Enter first unit (CELSIUS/FAHRENHEIT/KELVIN): ");
+						TemperatureUnit tu1 = TemperatureUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double t2 = scanner.nextDouble();
+
+						System.out.print("Enter second unit (CELSIUS/FAHRENHEIT/KELVIN): ");
+						TemperatureUnit tu2 = TemperatureUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<TemperatureUnit> temp1 = new Quantity<>(t1, tu1);
+
+						Quantity<TemperatureUnit> temp2 = new Quantity<>(t2, tu2);
+
+						System.out.println("Are Equal? → " + temp1.equals(temp2));
+
+						break;
+
+					case 16:
 
 						System.out.println("Exiting Application...");
 						scanner.close();
