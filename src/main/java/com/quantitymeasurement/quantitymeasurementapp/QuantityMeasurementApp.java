@@ -44,9 +44,12 @@ public class QuantityMeasurementApp {
 			System.out.println("7 -> Add two Volume");
 			System.out.println("8 -> Convert Voume");
 			System.out.println("9 -> Compare Two Volume");
+			System.out.println("10 → Subtract Length");
+			System.out.println("11 → Subtract Weight");
+			System.out.println("12 → Subtract Volume");
+			System.out.println("13 → Divide Length");
 
-			System.out.println("10 → Exit");
-
+			System.out.println("14 → Exit");
 			System.out.print("Enter your choice: ");
 
 			int choice = scanner.nextInt();
@@ -260,6 +263,101 @@ public class QuantityMeasurementApp {
 
 						break;
 					case 10:
+						System.out.println("\n--- SUBTRACT TWO LENGTHS ---");
+
+						System.out.print("Enter first value: ");
+						double sl1 = scanner.nextDouble();
+						System.out.print("Enter first unit: ");
+						LengthUnit slu1 = LengthUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double sl2 = scanner.nextDouble();
+						System.out.print("Enter second unit: ");
+						LengthUnit slu2 = LengthUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter target unit: ");
+						LengthUnit targetSL = LengthUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<LengthUnit> subLength1 = new Quantity<>(sl1, slu1);
+						Quantity<LengthUnit> subLength2 = new Quantity<>(sl2, slu2);
+
+						Quantity<LengthUnit> resultSL = subLength1.subtract(subLength2, targetSL);
+
+						System.out.println("Result = " + resultSL.getValue() + " " + targetSL);
+						break;
+
+					case 11:
+						System.out.println("\n--- SUBTRACT TWO WEIGHTS ---");
+
+						System.out.print("Enter first value: ");
+						double sw1 = scanner.nextDouble();
+						System.out.print("Enter first unit: ");
+						WeightUnit swu1 = WeightUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double sw2 = scanner.nextDouble();
+						System.out.print("Enter second unit: ");
+						WeightUnit swu2 = WeightUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter target unit: ");
+						WeightUnit targetSW = WeightUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<WeightUnit> subWeight1 = new Quantity<>(sw1, swu1);
+						Quantity<WeightUnit> subWeight2 = new Quantity<>(sw2, swu2);
+
+						Quantity<WeightUnit> resultSW = subWeight1.subtract(subWeight2, targetSW);
+
+						System.out.println("Result = " + resultSW.getValue() + " " + targetSW);
+						break;
+
+					case 12:
+						System.out.println("\n--- SUBTRACT TWO VOLUMES ---");
+
+						System.out.print("Enter first value: ");
+						double sv1 = scanner.nextDouble();
+						System.out.print("Enter first unit: ");
+						VolumeUnit svu1 = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double sv2 = scanner.nextDouble();
+						System.out.print("Enter second unit: ");
+						VolumeUnit svu2 = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter target unit: ");
+						VolumeUnit targetSV = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<VolumeUnit> subVolume1 = new Quantity<>(sv1, svu1);
+						Quantity<VolumeUnit> subVolume2 = new Quantity<>(sv2, svu2);
+
+						Quantity<VolumeUnit> resultSV = subVolume1.subtract(subVolume2, targetSV);
+
+						System.out.println("Result = " + resultSV.getValue() + " " + targetSV);
+						break;
+					case 13:
+
+						System.out.println("\n--- DIVIDE TWO LENGTHS ---");
+
+						System.out.print("Enter first value: ");
+						double d1 = scanner.nextDouble();
+
+						System.out.print("Enter first unit: ");
+						LengthUnit du1 = LengthUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double d2 = scanner.nextDouble();
+
+						System.out.print("Enter second unit: ");
+						LengthUnit du2 = LengthUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<LengthUnit> q1 = new Quantity<>(d1, du1);
+						Quantity<LengthUnit> q2 = new Quantity<>(d2, du2);
+
+						double resultDivide = q1.divide(q2);
+
+						System.out.println("Division Result = " + resultDivide);
+
+						break;
+					case 14:
 
 						System.out.println("Exiting Application...");
 						scanner.close();
