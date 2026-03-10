@@ -41,7 +41,11 @@ public class QuantityMeasurementApp {
 			System.out.println("4 → Add Two Weights");
 			System.out.println("5 → Convert Weight");
 			System.out.println("6 → Compare Two Weights");
-			System.out.println("7 → Exit");
+			System.out.println("7 -> Add two Volume");
+			System.out.println("8 -> Convert Voume");
+			System.out.println("9 -> Compare Two Volume");
+
+			System.out.println("10 → Exit");
 
 			System.out.print("Enter your choice: ");
 
@@ -186,8 +190,76 @@ public class QuantityMeasurementApp {
 						System.out.println("Are Equal? → " + compare1.equals(compare2));
 
 						break;
-
 					case 7:
+
+						System.out.println("\n--- ADD TWO VOLUMES ---");
+
+						System.out.print("Enter first value: ");
+						double vol1 = scanner.nextDouble();
+
+						System.out.print("Enter first unit: ");
+						VolumeUnit vu1 = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double vol2 = scanner.nextDouble();
+
+						System.out.print("Enter second unit: ");
+						VolumeUnit vu2 = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter target unit: ");
+						VolumeUnit targetVolume = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<VolumeUnit> volume1 = new Quantity<>(vol1, vu1);
+						Quantity<VolumeUnit> volume2 = new Quantity<>(vol2, vu2);
+
+						Quantity<VolumeUnit> resultVolume = volume1.add(volume2, targetVolume);
+
+						System.out.println("Result = " + resultVolume.getValue() + " " + targetVolume);
+
+						break;
+					case 8:
+
+						System.out.println("\n--- CONVERT VOLUME ---");
+
+						System.out.print("Enter value: ");
+						double volValue = scanner.nextDouble();
+
+						System.out.print("Enter source unit: ");
+						VolumeUnit sourceVolume = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter target unit: ");
+						VolumeUnit targetVol = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<VolumeUnit> volume = new Quantity<>(volValue, sourceVolume);
+
+						Quantity<VolumeUnit> convertedVolume = volume.convertTo(targetVol);
+
+						System.out.println("Converted Value = " + convertedVolume.getValue() + " " + targetVol);
+
+						break;
+					case 9:
+
+						System.out.println("\n--- COMPARE TWO VOLUMES ---");
+
+						System.out.print("Enter first value: ");
+						double cv1 = scanner.nextDouble();
+
+						System.out.print("Enter first unit: ");
+						VolumeUnit cvu1 = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						System.out.print("Enter second value: ");
+						double cv2 = scanner.nextDouble();
+
+						System.out.print("Enter second unit: ");
+						VolumeUnit cvu2 = VolumeUnit.valueOf(scanner.next().toUpperCase());
+
+						Quantity<VolumeUnit> volumeA = new Quantity<>(cv1, cvu1);
+						Quantity<VolumeUnit> volumeB = new Quantity<>(cv2, cvu2);
+
+						System.out.println("Are Equal? → " + volumeA.equals(volumeB));
+
+						break;
+					case 10:
 
 						System.out.println("Exiting Application...");
 						scanner.close();
