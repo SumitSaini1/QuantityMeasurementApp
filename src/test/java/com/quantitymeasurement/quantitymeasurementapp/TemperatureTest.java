@@ -1,6 +1,14 @@
 package com.quantitymeasurement.quantitymeasurementapp;
+import com.quantitymeasurement.quantitymeasurementapp.enums.TemperatureUnit;
+import com.quantitymeasurement.quantitymeasurementapp.enums.WeightUnit;
+import com.quantitymeasurement.quantitymeasurementapp.enums.VolumeUnit;
+import com.quantitymeasurement.quantitymeasurementapp.enums.LengthUnit;
+import com.quantitymeasurement.quantitymeasurementapp.util.IMeasurable;
 
 import org.junit.jupiter.api.Test;
+
+import com.quantitymeasurement.quantitymeasurementapp.util.Quantity;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TemperatureTest {
@@ -27,9 +35,12 @@ public class TemperatureTest {
 
     @Test
     void testTemperatureEquality_CelsiusToFahrenheit_100Celsius212Fahrenheit() {
-        assertTrue(new Quantity<>(100.0, TemperatureUnit.CELSIUS)
-                .equals(new Quantity<>(212.0, TemperatureUnit.FAHRENHEIT)));
+        assertTrue(
+            new Quantity<>(100.0, TemperatureUnit.CELSIUS)
+                .equals(new Quantity<>(212.0, TemperatureUnit.FAHRENHEIT))
+        );
     }
+               
 
     @Test
     void testTemperatureEquality_CelsiusToFahrenheit_Negative40Equal() {
