@@ -1,9 +1,11 @@
-# H2 database
-data/*.mv.db
-data/*.trace.db
 
-# build
+data/
+*.mv.db
+*.trace.db
+*.lock.db
+
+
 target/
 
-# logs
+
 *.log
