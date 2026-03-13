@@ -1,11 +1,33 @@
 package com.quantitymeasurement.quantitymeasurementapp.app;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.Statement;
 import com.quantitymeasurement.quantitymeasurementapp.controller.QuantityMeasurementController;
+import com.quantitymeasurement.quantitymeasurementapp.util.ConnectionPool;
 import com.quantitymeasurement.quantitymeasurementapp.util.IMeasurable;
 
 public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
+
+        
+        try {
+            Connection conn = ConnectionPool.getConnection();
+
+            String sql = new String(
+                    Files.readAllBytes(
+                            Paths.get("src/main/resources/schema.sql")));
+
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+
+            System.out.println("Database table created successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         QuantityMeasurementController controller =
                 new QuantityMeasurementController();

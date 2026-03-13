@@ -1,0 +1,9 @@
+# H2 database
+data/*.mv.db
+data/*.trace.db
+
+# build
+target/
+
+# logs
+*.log

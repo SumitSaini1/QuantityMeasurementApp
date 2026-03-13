@@ -11,7 +11,7 @@ public class QuantityMeasurementCacheRepository implements IQuantityMeasurementR
 
     private final List<QuantityMeasurementEntity> measurements;
 
-    private QuantityMeasurementCacheRepository() {
+    public QuantityMeasurementCacheRepository() {
         measurements = new ArrayList<>();
     }
 
