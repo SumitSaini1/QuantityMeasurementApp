@@ -3,7 +3,7 @@ package quantitymeasurement.dto;
 import lombok.*;
 
 @Data
-@Getter
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponseDto {

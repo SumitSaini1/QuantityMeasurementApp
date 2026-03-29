@@ -2,6 +2,7 @@ package quantitymeasurement.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import quantitymeasurement.model.type.AuthProviderType;
 @Builder
 @Entity
 @Data
@@ -17,10 +18,14 @@ public class User {
     @Column(unique=true,nullable=false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     private String role;
+    private String providerId;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProviderType providerType;
 
     
 

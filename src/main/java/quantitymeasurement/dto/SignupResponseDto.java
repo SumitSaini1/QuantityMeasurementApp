@@ -3,8 +3,8 @@ package quantitymeasurement.dto;
 import lombok.*;
 
 @Data
-@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SignupResponseDto {
     private Long id;
     private String username;    
