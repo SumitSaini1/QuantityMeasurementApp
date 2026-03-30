@@ -1,5 +1,6 @@
 package quantitymeasurement.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +12,11 @@ import quantitymeasurement.dto.LoginResponseDto;
 import quantitymeasurement.dto.SignupRequestDto;
 import quantitymeasurement.dto.LoginRequestDto;
 import quantitymeasurement.dto.SignupResponseDto;
-
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
@@ -22,16 +24,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestLoginDto) {
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto requestLoginDto) {
         LoginResponseDto responseDto = authService.login(requestLoginDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
     }
 
     @PostMapping("/signup")
-    ResponseEntity<SignupResponseDto> signUp(@RequestBody SignupRequestDto signUpRequestDto) {
+    public ResponseEntity<SignupResponseDto> signUp(@Valid @RequestBody SignupRequestDto signUpRequestDto) {
         SignupResponseDto responseDto = authService.signUp(signUpRequestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
 
     }
 
