@@ -351,3 +351,10 @@ Branch: `feature/UC17-spring-backend-for-quantity-measurement`
   - API documentation accessible
 
 ---
+### 🔹 UC18 – Spring Security with OAuth2 & JWT 
+Branch: `feature/uc18-google-auth-user-management`
+Implemented authentication and authorization
+Integrated Spring Security framework
+Added JWT-based token authentication
+Implemented OAuth2 login support
+Secured REST APIs with role-based access
