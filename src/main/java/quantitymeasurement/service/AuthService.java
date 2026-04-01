@@ -1,5 +1,5 @@
 package quantitymeasurement.service;
-
+import java.util.UUID;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,7 +38,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public LoginResponseDto login(LoginRequestDto loginDto) {
-        // triggers authentication flow 
+        // triggers authentication flow
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getUsername(),
@@ -48,7 +48,7 @@ public class AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal(); // if sucees it return userDetails
         User user = userRepo.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        String token = authUtil.generateAccessToken(user); // generate token 
+        String token = authUtil.generateAccessToken(user); // generate token
         System.out.println("Generated key " + token);
         return new LoginResponseDto(token, user.getId());
 
@@ -64,7 +64,8 @@ public class AuthService {
                 .password(encoder.encode(signUpResponseDto.getPassword())).role("ROLE_USER").build());
         return new SignupResponseDto(user.getId(), user.getUsername());
     }
-     public User signUpInternal(SignupRequestDto signupRequestDto,
+
+    public User signUpInternal(SignupRequestDto signupRequestDto,
             AuthProviderType authProviderType,
             String providerId) {
 
@@ -83,6 +84,8 @@ public class AuthService {
 
         if (authProviderType == AuthProviderType.EMAIL) {
             user.setPassword(encoder.encode(signupRequestDto.getPassword()));
+        } else {
+            user.setPassword(encoder.encode(UUID.randomUUID().toString()));
         }
 
         return userRepo.save(user);
@@ -113,6 +116,11 @@ public class AuthService {
             
                 user.setProviderId(providerId);
                 user.setProviderType(providerType);
+            
+              
+                if (user.getPassword() == null) {
+                    user.setPassword(encoder.encode(UUID.randomUUID().toString()));
+                }
             
                 userRepo.save(user);
             } else {
