@@ -40,7 +40,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String jwt = loginResponse.getJwt();;
 
-        String redirectUrl = "http://localhost:3000/oauth-success.html?token=" + jwt;
+        String redirectUrl = "http://localhost:3000/index.html?token=" + jwt;
 
         response.sendRedirect(redirectUrl);
     }

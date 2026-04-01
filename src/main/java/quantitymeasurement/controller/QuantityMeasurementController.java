@@ -13,6 +13,7 @@ import quantitymeasurement.util.Quantity;
 import quantitymeasurement.util.UnitConverter;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/quantity")
 @RequiredArgsConstructor
 public class QuantityMeasurementController {
@@ -35,10 +36,10 @@ public class QuantityMeasurementController {
         response.setValue2(request.getValue2());
         response.setUnit2(request.getUnit2());
 
-        double resultValue = service.add(q1, q2, unit1).getValue();
-        String resultUnit = service.add(q1, q2, unit1).getUnit().toString();
-        response.setResultValue(resultValue);
-        response.setResultUnit(resultUnit);
+        Quantity<?> result = service.add(q1, q2, unit1);
+
+        response.setResultValue(result.getValue());
+        response.setResultUnit(result.getUnit().toString());
         return response;
     }
 
@@ -52,17 +53,17 @@ public class QuantityMeasurementController {
         Quantity<?> q2 = new Quantity<>(request.getValue2(), unit2);
 
         ResponseDto response = new ResponseDto();
-        response.setOperation("ADDITION");
+        response.setOperation("SUBTRACTION");
 
         response.setValue1(request.getValue1());
         response.setUnit1(request.getUnit1());
         response.setValue2(request.getValue2());
         response.setUnit2(request.getUnit2());
 
-        double resultValue = service.subtract(q1, q2, unit1).getValue();
-        String resultUnit = service.subtract(q1, q2, unit1).getUnit().toString();
-        response.setResultValue(resultValue);
-        response.setResultUnit(resultUnit);
+        Quantity<?> result = service.subtract(q1, q2, unit1);
+
+        response.setResultValue(result.getValue());
+        response.setResultUnit(result.getUnit().toString());
         return response;
     }
 
@@ -76,7 +77,7 @@ public class QuantityMeasurementController {
         Quantity<?> q2 = new Quantity<>(request.getValue2(), unit2);
         double resultValue = service.divide(q1, q2);
         ResponseDto response = new ResponseDto();
-        response.setOperation("DIVIDE");
+        response.setOperation("DIVISION");
         response.setValue1(request.getValue1());
         response.setUnit1(request.getUnit1());
         response.setValue2(request.getValue2());
@@ -96,7 +97,7 @@ public class QuantityMeasurementController {
         Quantity<?> q1 = new Quantity<>(request.getValue1(), unit1);
         Quantity<?> q2 = new Quantity<>(request.getValue2(), unit2);
         ResponseDto response = new ResponseDto();
-        response.setOperation("ADDITION");
+        response.setOperation("COMPARISON");
 
         response.setValue1(request.getValue1());
         response.setUnit1(request.getUnit1());
@@ -111,7 +112,7 @@ public class QuantityMeasurementController {
     }
 
     @PostMapping("/convert")
-    public ResponseDto convert(@RequestBody ConvertRequest request) {
+    public ResponseDto convert(@Valid @RequestBody ConvertRequest request) {
 
         IMeasurable fromUnit = UnitConverter.fromString(request.getFromUnit());
         IMeasurable toUnit = UnitConverter.fromString(request.getToUnit());

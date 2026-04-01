@@ -1,5 +1,6 @@
 package quantitymeasurement.service;
 
+import quantitymeasurement.exception.QuantityMeasurementException;
 import quantitymeasurement.model.QuantityMeasurementEntity;
 import quantitymeasurement.repository.QuantityMeasurementRepository;
 import quantitymeasurement.util.IMeasurable;
@@ -76,6 +77,9 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 
     @Override
     public double divide(Quantity<?> q1, Quantity<?> q2) {
+        if (q2.getValue()== 0) {
+            throw new QuantityMeasurementException("Division by zero is not allowed");
+        }
 
         double result = ((Quantity) q1).divide((Quantity) q2);
 
