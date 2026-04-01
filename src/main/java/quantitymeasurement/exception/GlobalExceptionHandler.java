@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<HashMap<String,Object> >handleRuntimeException(RuntimeException ex) {
         HashMap<String,Object> error=new HashMap<>();
