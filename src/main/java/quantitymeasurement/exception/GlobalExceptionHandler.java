@@ -1,5 +1,5 @@
 package quantitymeasurement.exception;
-
+import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,10 +8,15 @@ public class GlobalExceptionHandler {
 
     
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+    public ResponseEntity<HashMap<String,Object> >handleRuntimeException(RuntimeException ex) {
+        HashMap<String,Object> error=new HashMap<>();
+        error.put("message",ex.getMessage());
+        error.put("status",400);
+        error.put("timestamp",System.currentTimeMillis());
+
         return ResponseEntity
                 .badRequest()
-                .body(ex.getMessage());
+                .body(error);
     }
 
     
