@@ -9,24 +9,24 @@ spring:
           lower-case-service-id: true
       routes:
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
 
         - id: quantity-service
-          uri: lb://quantity-service
+          uri: lb://QUANTITY-SERVICE
           predicates:
             - Path=/api/quantity/**
 
         - id: auth-service-api-docs
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
             - Path=/aggregate/auth-service/v3/api-docs
           filters:
             - RewritePath=/aggregate/auth-service/v3/api-docs, /v3/api-docs
 
         - id: quantity-service-api-docs
-          uri: lb://quantity-service
+          uri: lb://QUANTITY-SERVICE
           predicates:
             - Path=/aggregate/quantity-service/v3/api-docs
           filters:
@@ -46,7 +46,7 @@ eureka:
     service-url:
       defaultZone: https://quantitymeasurementapp-production-d15a.up.railway.app/eureka
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: false
 
 springdoc:
   swagger-ui:
