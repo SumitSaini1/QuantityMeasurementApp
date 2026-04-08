@@ -9,24 +9,24 @@ spring:
           lower-case-service-id: true
       routes:
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
             - Path=/auth/**
 
         - id: quantity-service
-          uri: lb://QUANTITY-SERVICE
+          uri: lb://quantity-service
           predicates:
             - Path=/api/quantity/**
 
         - id: auth-service-api-docs
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
             - Path=/aggregate/auth-service/v3/api-docs
           filters:
             - RewritePath=/aggregate/auth-service/v3/api-docs, /v3/api-docs
 
         - id: quantity-service-api-docs
-          uri: lb://QUANTITY-SERVICE
+          uri: lb://quantity-service
           predicates:
             - Path=/aggregate/quantity-service/v3/api-docs
           filters:
