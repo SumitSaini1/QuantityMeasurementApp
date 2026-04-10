@@ -23,16 +23,16 @@ spring:
         - id: auth-service-api-docs
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/aggregate/auth-service/v3/api-docs
+            - Path=/aggregate/auth-service/**
           filters:
-            - RewritePath=/aggregate/auth-service/v3/api-docs, /v3/api-docs
+            - RewritePath=/aggregate/auth-service/(?<segment>.*), /${segment}
 
         - id: quantity-service-api-docs
           uri: lb://QUANTITY-SERVICE
           predicates:
-            - Path=/aggregate/quantity-service/v3/api-docs
+            - Path=/aggregate/quantity-service/**
           filters:
-            - RewritePath=/aggregate/quantity-service/v3/api-docs, /v3/api-docs
+            - RewritePath=/aggregate/quantity-service/(?<segment>.*), /${segment}
 
       
       globalcors:
