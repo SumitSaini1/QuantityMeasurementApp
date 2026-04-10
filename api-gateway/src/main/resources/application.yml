@@ -34,7 +34,6 @@ spring:
           filters:
             - RewritePath=/aggregate/quantity-service/(?<path>.*), /$\{path}
 
-      
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -55,12 +54,20 @@ spring:
 server:
   port: ${PORT:8080}
 
+# Single merged eureka block
 eureka:
   client:
     service-url:
       defaultZone: https://quantitymeasurementapp-production-d15a.up.railway.app/eureka
   instance:
     prefer-ip-address: false
+    hostname: api-gateway-production-d707.up.railway.app
+    non-secure-port: 443
+    non-secure-port-enabled: true
+    secure-port-enabled: false
+    status-page-url: https://api-gateway-production-d707.up.railway.app/actuator/info
+    health-check-url: https://api-gateway-production-d707.up.railway.app/actuator/health
+    home-page-url: https://api-gateway-production-d707.up.railway.app/
 
 springdoc:
   swagger-ui:
@@ -71,7 +78,6 @@ springdoc:
         url: /aggregate/auth-service/v3/api-docs
       - name: quantity-service
         url: /aggregate/quantity-service/v3/api-docs
-
   api-docs:
     path: /v3/api-docs
 
@@ -80,10 +86,3 @@ management:
     web:
       exposure:
         include: "*"
-
-eureka:
-  instance:
-    prefer-ip-address: false
-    hostname: api-gateway-production-d707.up.railway.app
-    non-secure-port: 443
-    non-secure-port-enabled: true
