@@ -80,3 +80,10 @@ management:
     web:
       exposure:
         include: "*"
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    hostname: api-gateway-production-d707.up.railway.app
+    non-secure-port: 443
+    non-secure-port-enabled: true
