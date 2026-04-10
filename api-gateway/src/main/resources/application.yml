@@ -25,14 +25,14 @@ spring:
           predicates:
             - Path=/aggregate/auth-service/**
           filters:
-            - RewritePath=/aggregate/auth-service/(?<segment>.*), /${segment}
+            - RewritePath=/aggregate/auth-service/(?<path>.*), /$\{path}
 
         - id: quantity-service-api-docs
           uri: lb://QUANTITY-SERVICE
           predicates:
             - Path=/aggregate/quantity-service/**
           filters:
-            - RewritePath=/aggregate/quantity-service/(?<segment>.*), /${segment}
+            - RewritePath=/aggregate/quantity-service/(?<path>.*), /$\{path}
 
       
       globalcors:
