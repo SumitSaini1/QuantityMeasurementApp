@@ -1,9 +1,13 @@
 # QuantityMeasurementApp
 
-This project is a step-by-step implementation of a Length Measurement system in Java.
+A complete end-to-end backend system built step-by-step from core Java concepts to a fully deployed microservices architecture.
 
-Each feature is implemented in a separate Git branch (UC1 to UC5).
+This project demonstrates strong fundamentals in OOP, system design, Spring Boot, microservices, and cloud deployment.
 
+---
+🚀 Project Evolution (UC1 → UC22)
+
+This project was developed incrementally using Use Case (UC) based development.
 ---
 
 ## Branches and What Was Done
@@ -358,3 +362,154 @@ Integrated Spring Security framework
 Added JWT-based token authentication
 Implemented OAuth2 login support
 Secured REST APIs with role-based access
+---
+## 🧠 UC21 – Monolith to Microservices
+Branch: `feature/uc21-QMA-Microservices`
+Refactored the monolithic system into a **Microservices Architecture** by identifying bounded contexts.
+
+### 🔹 Microservices Breakdown
+
+#### 1. Auth Service
+
+Handles authentication & authorization
+
+**Features:**
+
+* User Signup/Login
+* JWT Token generation
+* OAuth2 login
+
+**Database:** User data
+
+---
+
+#### 2. Quantity Service
+
+Contains all business logic from UC1–UC17
+
+**Features:**
+
+* Measurement operations
+* CRUD APIs for quantities
+
+**Database:** Measurement data
+
+---
+
+#### 3. API Gateway
+
+Built using Spring Cloud Gateway
+
+* Routes client requests to appropriate services
+
+**Example:**
+
+* `/auth/** → Auth Service`
+* `/quantity/** → Quantity Service`
+
+---
+
+#### 4. Eureka Server
+
+* Service discovery mechanism
+* Enables dynamic service registration and lookup
+
+---
+
+## ☁️ UC22 – Deployment of Microservices
+Branch: `feature/Uc22-Qma-Deployment`
+
+Deployed the microservices architecture to cloud platforms, making the system publicly accessible and scalable.
+
+### 🔹 Platform Used
+
+* Render *(or Railway if applicable)*
+
+---
+
+### 🔹 Services Deployed
+
+* Eureka Server
+* Auth Service
+* Quantity Service
+* API Gateway
+
+---
+
+### 🔹 Deployment Features
+
+* Centralized routing via API Gateway
+* Service discovery using Eureka
+* Independent service deployment
+* Scalable distributed architecture
+* Public API access
+
+---
+
+## 🏗️ Architecture Diagram (Logical)
+
+```
+Client → API Gateway → Microservices
+                     ↘ Auth Service
+                     ↘ Quantity Service
+                     ↘ Eureka Server
+```
+
+---
+
+## 🛠️ Tech Stack
+
+* **Language:** Java
+* **Framework:** Spring Boot
+* **Architecture:** Microservices
+* **Security:** Spring Security, JWT, OAuth2
+* **Database:** MySQL / PostgreSQL
+* **Service Discovery:** Eureka
+* **Gateway:** Spring Cloud Gateway
+* **Build Tool:** Maven
+* **Documentation:** Swagger
+* **Deployment:** Railway
+
+---
+
+## 📦 Key Features
+
+* Cross-unit measurement comparison
+* Generic and scalable design
+* Multi-category support (Length, Weight, Volume, Temperature)
+* Secure authentication system
+* RESTful APIs
+* Microservices architecture
+* Cloud deployment
+
+---
+
+## 📌 Learning Outcomes
+
+* Designed scalable domain models
+* Applied SOLID principles
+* Built REST APIs with Spring Boot
+* Implemented authentication & authorization
+* Migrated monolith → microservices
+* Deployed distributed system on cloud
+
+---
+
+## 🔮 Future Enhancements
+
+* Redis integration (OTP + caching)
+* Docker containerization
+* CI/CD using GitHub Actions
+* Rate limiting & API security enhancements
+
+---
+
+## 👨‍💻 Author
+
+**Sumit Saini**
+
+---
+
+## ⭐ Conclusion
+
+This project showcases the complete journey from **basic Java OOP to a production-ready distributed system**, including **microservices transformation (UC21)** and **cloud deployment (UC22)**.
